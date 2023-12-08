@@ -34,15 +34,13 @@ class Category:
     if self.withdraw(amount, description) is True:
       description2 = "Transfer from " + self.name
       destination.deposit(amount, description2)
+      return True
     else:
       return False
 
   #Method check_funds
   def check_funds(self, amount):
-    if amount > self.total:
-      return False
-    elif amount < self.total:
-      return True
+    return amount <= self.total
 
   # Method to format ledger entries
   def format_ledger_entry(self, entry):
@@ -64,5 +62,3 @@ class Category:
     result = f"{title_line}\n{ledger_entries}{total_line}"
 
     return result
-
-#def create_spend_chart(categories):
