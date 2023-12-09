@@ -62,3 +62,32 @@ class Category:
     result = f"{title_line}\n{ledger_entries}{total_line}"
 
     return result
+
+def create_spend_chart(categories):
+  #Get percentage
+  withdrawals = [sum(entry['amount'] for entry in category.ledger if entry['amount'] < 0) for category in categories]
+  total_withdrawals = sum(withdrawals)
+  percentages = [int((withdrawal / total_withdrawals) * 100) // 10 * 10 for withdrawal in withdrawals]
+  
+  #Make graphic 
+  chart = "Percentage spent by category\n"
+  for i in range(100, -1, -10):
+      chart += f"{i:3}| "
+      for percent in percentages:
+          chart += "o" if percent >= i else " "
+          chart += "  "
+      chart += "\n"
+  
+  #Line to separate
+  chart += "    ----------\n"
+  
+  #Name of the categories
+  max_name_length = max(len(category.name) for category in categories)
+  for i in range(max_name_length):
+      chart += "     "
+      for category in categories:
+          chart += category.name[i].upper() if i == 0 else category.name[i].lower() if i < len(category.name) else " "
+          chart += "  "
+      chart += "\n"
+  
+  return chart.rstrip()
